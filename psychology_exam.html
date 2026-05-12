@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Психологія — Підготовка до іспиту</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14;
+  --surface: #16181f;
+  --surface2: #1e2029;
+  --border: #2a2d3a;
+  --accent: #c9a96e;
+  --accent2: #7c9ec9;
+  --accent3: #9ec97c;
+  --text: #e8e4dc;
+  --text-muted: #8a8680;
+  --correct: #4caf7d;
+  --wrong: #e05c5c;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #0e0f14 0%, #1a1520 50%, #0e0f14 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(201,169,110,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* NAV TABS */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem 0.5rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  padding: 0.55rem 1.3rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tab-btn.active { background: var(--accent); color: #0e0f14; border-color: var(--accent); font-weight: 600; }
+
+/* MAIN LAYOUT */
+main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+/* SEARCH */
+.search-wrap {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 0.9rem 1.2rem 0.9rem 3rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Source Serif 4', serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--accent); }
+.search-icon {
+  position: absolute;
+  left: 1rem; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+}
+.results-count { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem; padding-left: 0.2rem; }
+
+/* VIEW — accordion list */
+#view-list .section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.8rem 0 0.4rem;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.q-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.q-item:hover { border-color: rgba(201,169,110,0.4); }
+.q-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  background: var(--surface);
+  user-select: none;
+  transition: background 0.15s;
+}
+.q-header:hover { background: var(--surface2); }
+.q-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 700;
+  min-width: 2rem;
+  padding-top: 0.15rem;
+}
+.q-title {
+  flex: 1;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.45;
+}
+.q-arrow {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  padding-top: 0.2rem;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+.q-item.open .q-arrow { transform: rotate(180deg); }
+.q-body {
+  display: none;
+  padding: 0 1.2rem 1.2rem 3.2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  animation: fadeSlide 0.2s ease;
+}
+.q-item.open .q-body { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.q-body p { font-size: 0.93rem; color: #ccc8bf; margin-bottom: 0.7rem; }
+.q-body ul, .q-body ol { padding-left: 1.4rem; margin-bottom: 0.7rem; }
+.q-body li { font-size: 0.93rem; color: #ccc8bf; margin-bottom: 0.3rem; }
+.q-body strong { color: var(--accent); font-weight: 600; }
+.q-body em { color: var(--accent2); font-style: italic; }
+.source-tag {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 100px;
+  background: rgba(124,158,201,0.12);
+  border: 1px solid rgba(124,158,201,0.3);
+  font-size: 0.72rem;
+  color: var(--accent2);
+  font-style: italic;
+}
+
+/* VIEW — flashcards */
+#view-cards { display: none; }
+.cards-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.cards-controls span { color: var(--text-muted); font-size: 0.9rem; }
+.btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.btn-gold { background: var(--accent); color: #0e0f14; font-weight: 600; }
+.btn-gold:hover { filter: brightness(1.1); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.flashcard-wrap {
+  perspective: 1200px;
+  margin-bottom: 1.5rem;
+}
+.flashcard {
+  width: 100%;
+  min-height: 260px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute;
+  width: 100%;
+  min-height: 260px;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+.card-front {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+}
+.card-back {
+  background: linear-gradient(135deg, #1a1f2e 0%, #16202e 100%);
+  border: 1px solid rgba(124,158,201,0.3);
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  text-align: left;
+  align-items: flex-start;
+}
+.card-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.card-front .card-label { color: var(--accent); }
+.card-q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+.card-hint {
+  margin-top: 1.2rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.card-back p { font-size: 0.9rem; color: #ccc8bf; margin-bottom: 0.6rem; }
+.card-back ul { padding-left: 1.2rem; }
+.card-back li { font-size: 0.88rem; color: #ccc8bf; margin-bottom: 0.25rem; }
+.card-back strong { color: var(--accent); }
+.card-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.progress-bar-wrap {
+  background: var(--surface);
+  border-radius: 100px;
+  height: 6px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+.card-counter {
+  text-align: center;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* VIEW — quiz */
+#view-quiz { display: none; }
+.quiz-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.quiz-q-num {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.quiz-q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+.quiz-opt {
+  padding: 0.85rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem;
+  text-align: left;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--accent); background: rgba(201,169,110,0.07); }
+.quiz-opt.correct { background: rgba(76,175,125,0.15); border-color: var(--correct); color: #a0e8c4; }
+.quiz-opt.wrong { background: rgba(224,92,92,0.12); border-color: var(--wrong); color: #f0a0a0; }
+.quiz-feedback {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.ok { background: rgba(76,175,125,0.1); color: var(--correct); border: 1px solid rgba(76,175,125,0.3); }
+.quiz-feedback.err { background: rgba(224,92,92,0.1); color: var(--wrong); border: 1px solid rgba(224,92,92,0.3); }
+.quiz-score-box {
+  text-align: center;
+  padding: 3rem 1rem;
+  display: none;
+}
+.quiz-score-box.show { display: block; }
+.quiz-score-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+.quiz-score-label { color: var(--text-muted); margin-top: 0.5rem; }
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+.cat-btn {
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-family: 'Source Serif 4', serif;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.cat-btn.active { background: rgba(201,169,110,0.15); border-color: var(--accent); color: var(--accent); }
+.no-results { text-align: center; padding: 3rem; color: var(--text-muted); font-style: italic; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* mobile */
+@media(max-width:600px){
+  .q-body { padding-left: 1.2rem; }
+  .card-face { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Психологія<br>Підготовка до іспиту</h1>
+  <p>Теоретичні питання з відповідями та інтерактивний режим</p>
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num" id="totalQ">0</span><span class="stat-label">Питань</span></div>
+    <div class="stat"><span class="stat-num" id="totalCat">8</span><span class="stat-label">Розділів</span></div>
+    <div class="stat"><span class="stat-num" id="learnedCount">0</span><span class="stat-label">Вивчено</span></div>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="switchTab('list')">📚 Всі питання</button>
+  <button class="tab-btn" onclick="switchTab('cards')">🃏 Флеш-картки</button>
+  <button class="tab-btn" onclick="switchTab('quiz')">🎯 Тест</button>
+</nav>
+
+<main>
+  <!-- LIST VIEW -->
+  <div id="view-list">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Пошук по питаннях..." oninput="filterQuestions()">
+    </div>
+    <div class="category-filter" id="catFilter"></div>
+    <div class="results-count" id="resultsCount"></div>
+    <div id="questionList"></div>
+  </div>
+
+  <!-- FLASHCARDS VIEW -->
+  <div id="view-cards">
+    <div class="cards-controls">
+      <span id="deckLabel">Колода: Всі питання</span>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-outline" onclick="shuffleCards()">🔀 Перемішати</button>
+        <button class="btn btn-gold" onclick="resetCards()">↺ З початку</button>
+      </div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="cardProgress" style="width:0%"></div></div>
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="theCard" onclick="flipCard()">
+        <div class="card-face card-front">
+          <div class="card-label">Питання</div>
+          <div class="card-q-text" id="cardQ">Завантаження...</div>
+          <div class="card-hint">Натисніть щоб побачити відповідь</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-label" style="margin-bottom:.5rem">Відповідь</div>
+          <div id="cardA" style="font-size:.9rem;line-height:1.6;color:#ccc8bf;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-counter" id="cardCounter"></div>
+    <div class="card-nav">
+      <button class="btn btn-outline" onclick="prevCard()">← Назад</button>
+      <button class="btn btn-outline" onclick="markLearned()" id="learnBtn">✓ Знаю</button>
+      <button class="btn btn-gold" onclick="nextCard()">Далі →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div id="view-quiz">
+    <div class="cards-controls">
+      <span>Перевірте свої знання</span>
+      <button class="btn btn-gold" onclick="startQuiz()">▶ Почати тест</button>
+    </div>
+    <div id="quizContainer"></div>
+    <div class="quiz-score-box" id="quizScore">
+      <div class="quiz-score-big" id="scoreBig">0/0</div>
+      <div class="quiz-score-label" id="scoreLabel">Результат</div>
+      <button class="btn btn-gold" style="margin-top:1.5rem" onclick="startQuiz()">🔄 Пройти ще раз</button>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============================================================
+// DATA — all questions with answers and sources
+// ============================================================
+const CATEGORIES = {
+  "Загальна психологія": "#c9a96e",
+  "Диференційна та особистісна психологія": "#9ec97c",
+  "Психодіагностика": "#7c9ec9",
+  "Юридична психологія": "#c97c9e",
+  "Психотерапія та корекція": "#9ec9c0",
+  "Вікова психологія": "#c9c07c",
+  "Історія психології": "#b07cc9",
+  "Нейрофізіологія та свідомість": "#c0c9a0"
+};
+
+const QA = [
+// ===== ЗАГАЛЬНА ПСИХОЛОГІЯ =====
+{cat:"Загальна психологія",q:"Основні напрямки і школи сучасної психології",a:`<p><strong>Психологія</strong> — наука про психіку, поведінку та психічні процеси. Сучасна психологія включає кілька великих напрямків:</p><ul><li><strong>Психоаналіз</strong> (Фрейд, Юнг, Адлер) — вивчення несвідомих процесів, потягів, конфліктів</li><li><strong>Біхевіоризм</strong> (Вотсон, Скіннер) — психологія поведінки; стимул–реакція</li><li><strong>Гуманістична психологія</strong> (Маслоу, Роджерс) — самоактуалізація, потреби, особистісне зростання</li><li><strong>Когнітивна психологія</strong> (Піаже, Найссер) — вивчення пізнавальних процесів, обробки інформації</li><li><strong>Гештальтпсихологія</strong> (Вертгаймер, Кофка, Келер) — сприйняття цілісних структур</li><li><strong>Діяльнісний підхід</strong> (Виготський, Леонтьєв, Рубінштейн) — психіка формується в діяльності</li><li><strong>Екзистенційна психологія</strong> (Франкл, Ялом) — смисл, свобода, відповідальність</li></ul>`,src:"Максименко С.Д. Загальна психологія. — К.: КММ, 2004."},
+{cat:"Загальна психологія",q:"Предмет і структура сучасної загальної психології",a:`<p><strong>Предмет загальної психології</strong> — закономірності виникнення, розвитку та функціонування психіки як вищої форми відображення дійсності.</p><p>Структура загальної психології включає вивчення:</p><ul><li><strong>Психічних процесів</strong>: пізнавальні (відчуття, сприйняття, увага, пам'ять, мислення, мовлення, уява) та емоційно-вольові (емоції, почуття, воля)</li><li><strong>Психічних станів</strong>: стрес, афект, фрустрація, натхнення тощо</li><li><strong>Психічних властивостей особистості</strong>: темперамент, характер, здібності, спрямованість</li><li><strong>Свідомості та несвідомого</strong></li><li><strong>Особистості та діяльності</strong></li></ul>`,src:"Максименко С.Д. Загальна психологія. — К.: КММ, 2004."},
+{cat:"Загальна психологія",q:"Загальна характеристика уваги",a:`<p><strong>Увага</strong> — спрямованість і зосередженість психічної діяльності на певному об'єкті при одночасному відвернені від інших.</p><p><strong>Функції уваги:</strong> відбір інформації, регуляція і контроль діяльності, активізація психічних процесів.</p><p><strong>Властивості уваги:</strong></p><ul><li><strong>Обсяг</strong> — кількість об'єктів (5–9 за законом Міллера)</li><li><strong>Концентрація</strong> — ступінь зосередженості</li><li><strong>Стійкість</strong> — тривалість утримання на об'єкті</li><li><strong>Переключення</strong> — довільна зміна об'єкту</li><li><strong>Розподіл</strong> — одночасна увага до кількох об'єктів</li></ul><p><strong>Види:</strong> мимовільна (виникає без зусиль), довільна (свідомо спрямована), після довільна (виникає після вольового зусилля).</p>`,src:"Немов Р.С. Психологія. Т.1. — М., 2003; Рубінштейн С.Л. Основи загальної психології."},
+{cat:"Загальна психологія",q:"Загальна характеристика відчуттів",a:`<p><strong>Відчуття</strong> — найпростіший психічний процес, що відображає окремі властивості предметів і явищ реального світу при їх безпосередньому впливі на органи чуття.</p><p><strong>Класифікація відчуттів:</strong></p><ul><li><strong>Екстероцептивні</strong> (зовнішні): зорові, слухові, нюхові, смакові, тактильні</li><li><strong>Інтероцептивні</strong> (внутрішні): відчуття з внутрішніх органів</li><li><strong>Пропріоцептивні</strong>: відчуття положення і рухів тіла</li></ul><p><strong>Основні властивості:</strong> якість, інтенсивність, тривалість, просторова локалізація.</p><p><strong>Закономірності:</strong> абсолютний поріг (мінімальна інтенсивність), диференційний поріг, адаптація, сенсибілізація, синестезія.</p>`,src:"Загальна психологія / За ред. Петровського А.В. — М., 1986; Немов Р.С. Психологія."},
+{cat:"Загальна психологія",q:"Загальна характеристика пам'яті",a:`<p><strong>Пам'ять</strong> — психічний процес відображення, фіксації, збереження, відтворення та забування минулого досвіду.</p><p><strong>Процеси пам'яті:</strong> запам'ятовування → збереження → відтворення → забування.</p><p><strong>Класифікація:</strong></p><ul><li>За змістом: образна, словесно-логічна, рухова, емоційна</li><li>За часом: сенсорна (до 1 с), короткочасна (до 30 с, 7±2 одиниць), довготривала (необмежена)</li><li>За ступенем вольового контролю: мимовільна і довільна</li></ul><p><strong>Теорії:</strong> асоціативна, діяльнісна (Виготський, Зінченко), інформаційна (Аткінсон і Шиффрін — модель 1968 р.).</p><p><strong>Крива забування Еббінгауза</strong>: найшвидше забування — в перші години після запам'ятовування.</p>`,src:"Еббінгауз Г. Про пам'ять (1885); Аткінсон Р., Шиффрін Р. (1968); Немов Р.С. Психологія."},
+{cat:"Загальна психологія",q:"Загальна характеристика уяви",a:`<p><strong>Уява</strong> — психічний процес створення нових образів на основі раніше сприйнятого матеріалу через його перетворення.</p><p><strong>Функції:</strong> пізнавальна, прогностична, регуляторна, захисна (психологічний захист через фантазії).</p><p><strong>Види уяви:</strong></p><ul><li><strong>Мимовільна</strong> (пасивна): сни, галюцинації, мрії без зусиль</li><li><strong>Довільна</strong> (активна): усвідомлений процес</li><li><strong>Відтворювальна</strong>: за описом чи схемою</li><li><strong>Творча</strong>: створення принципово нових образів</li><li><strong>Мрія</strong>: бажаний образ майбутнього</li></ul><p><strong>Механізми:</strong> аглютинація (злиття), акцентуація (загострення), аналогія, схематизація, типізація.</p>`,src:"Виготський Л.С. Уява і творчість у дитинстві. — М., 1967; Рубінштейн С.Л. Основи загальної психології."},
+{cat:"Загальна психологія",q:"Загальна характеристика сприйняття",a:`<p><strong>Сприйняття</strong> — цілісне відображення предметів і явищ об'єктивної дійсності при їх безпосередній дії на органи чуття.</p><p><strong>Відмінність від відчуттів:</strong> сприйняття відображає предмет як ціле, а не окремі властивості.</p><p><strong>Властивості сприйняття:</strong></p><ul><li><strong>Предметність</strong> — образ відноситься до конкретного предмету</li><li><strong>Цілісність</strong> — сприймається повна структура</li><li><strong>Константність</strong> — стабільність образу при зміні умов</li><li><strong>Структурність</strong> — сприйняття абстрагованої структури</li><li><strong>Осмисленість</strong> — пов'язання зі знаннями і досвідом</li><li><strong>Вибірковість</strong> — виділення фігури з фону</li><li><strong>Апперцепція</strong> — залежність від попереднього досвіду</li></ul>`,src:"Рубінштейн С.Л. Основи загальної психології; Гештальтпсихологія (Вертгаймер, Кофка, Келер)."},
+{cat:"Загальна психологія",q:"Загальна характеристика мислення",a:`<p><strong>Мислення</strong> — вищий пізнавальний процес опосередкованого і узагальненого відображення дійсності, спрямований на розв'язання задач.</p><p><strong>Форми мислення:</strong> поняття, судження, умовивід.</p><p><strong>Операції мислення:</strong> аналіз, синтез, порівняння, абстракція, узагальнення, конкретизація, класифікація.</p><p><strong>Виды мислення:</strong></p><ul><li><strong>Наочно-дієве</strong> — у процесі практичної дії (до 3 р.)</li><li><strong>Наочно-образне</strong> — на основі образів (3–7 р.)</li><li><strong>Словесно-логічне</strong> — у поняттях та судженнях</li><li><strong>Теоретичне та практичне</strong></li><li><strong>Творче та критичне</strong></li></ul><p><strong>Якості мислення:</strong> самостійність, гнучкість, глибина, широта, критичність, швидкість.</p>`,src:"Тихомиров О.К. Психологія мислення. — М., 1984; Рубінштейн С.Л. Про мислення та шляхи його дослідження."},
+{cat:"Загальна психологія",q:"Мовлення. Психологічна характеристика мовлення та мовної діяльності",a:`<p><strong>Мовлення</strong> — процес використання мови для спілкування та мислення. Мова — система знаків; мовлення — її застосування.</p><p><strong>Функції мовлення:</strong> комунікативна (спілкування), сигніфікативна (позначення), узагальнення (зв'язок із мисленням), регулятивна (регуляція поведінки).</p><p><strong>Форми мовлення:</strong></p><ul><li><strong>Зовнішнє</strong>: усне (монолог, діалог) і письмове</li><li><strong>Внутрішнє</strong>: проговорення думок «про себе», пов'язане з мисленням</li></ul><p><strong>Властивості:</strong> змістовність, зрозумілість, виразність, дієвість.</p><p><strong>Мовна діяльність</strong> (за Виготським, Лурія): мотивація → думка → внутрішня схема → розгортання у мовлення. Тісно пов'язана з вищими психічними функціями.</p>`,src:"Виготський Л.С. Мислення і мовлення. — М., 1934; Лурія О.Р. Мова і свідомість. — М., 1979."},
+{cat:"Загальна психологія",q:"Загальна характеристика емоцій. Теорії емоцій",a:`<p><strong>Емоції</strong> — суб'єктивні переживання людини, що відображають особисте ставлення до об'єктів, подій, ситуацій.</p><p><strong>Функції:</strong> оцінна, регулятивна, спонукальна, комунікативна, захисна.</p><p><strong>Класифікація:</strong> настрій (тривалий фон), афект (інтенсивний короткий), власне емоції, почуття (стійке ставлення), пристрасть (сильне стійке переживання), стрес.</p><p><strong>Основні теорії:</strong></p><ul><li><strong>Джемс–Ланге</strong>: тілесні зміни → емоція («ми боїмося, тому що тремтимо»)</li><li><strong>Кеннон–Бард</strong>: таламус одночасно активує і тіло, і кору — емоції й реакції паралельні</li><li><strong>Шехтер–Сінгер</strong> (когнітивна): фізіологічне збудження + когнітивна оцінка ситуації</li><li><strong>Ізард</strong>: диференційні емоції — 10 базових (радість, страх, гнів тощо)</li><li><strong>Лазарус</strong>: когнітивна оцінка загрози або блага → емоція</li></ul>`,src:"Ізард К. Психологія емоцій. — СПб., 1999; Немов Р.С. Психологія Т.1."},
+{cat:"Загальна психологія",q:"Поняття мотиву і мотивації в психології. Теорії мотивації",a:`<p><strong>Мотив</strong> — спонукання до діяльності, пов'язане з задоволенням певної потреби. <strong>Мотивація</strong> — сукупність мотивів, що визначають спрямованість і активність особистості.</p><p><strong>Основні теорії мотивації:</strong></p><ul><li><strong>Маслоу</strong> (1943): ієрархія потреб — фізіологічні → безпека → належність → повага → самоактуалізація</li><li><strong>Герцберг</strong>: гігієнічні фактори (незадоволення) vs мотиватори (задоволення)</li><li><strong>Макклелланд</strong>: потреби в досягненні, приналежності, владі</li><li><strong>Врум</strong>: очікування × інструментальність × валентність = мотивація</li><li><strong>Леонтьєв</strong> (діяльнісна теорія): потреба → предмет → мотив; мотив може стати особистісним смислом</li><li><strong>Деці і Раян</strong>: теорія самодетермінації — внутрішня і зовнішня мотивація</li></ul>`,src:"Маслоу А. Мотивація та особистість (1954); Леонтьєв А.Н. Діяльність. Свідомість. Особистість (1975)."},
+{cat:"Загальна психологія",q:"Воля та її функції. Теорії волі",a:`<p><strong>Воля</strong> — здатність людини свідомо регулювати свою поведінку і діяльність, долаючи зовнішні та внутрішні перешкоди.</p><p><strong>Функції волі:</strong></p><ul><li>Спонукальна — ініціює і підтримує дію</li><li>Гальмівна — стримує небажані дії та імпульси</li><li>Регулятивна — узгоджує дії із свідомими цілями</li></ul><p><strong>Структура вольового акту:</strong> виникнення мотиву → боротьба мотивів → прийняття рішення → виконання.</p><p><strong>Теорії волі:</strong></p><ul><li><strong>Гетерономні</strong> (воля зводиться до інших процесів): інтелектуалістичні (Гербарт, Гегель), афективні (Вундт)</li><li><strong>Автономні</strong> (воля як самостійна сила): Кант, Шопенгауер</li><li><strong>Діяльнісний підхід</strong> (Виготський, Рубінштейн): воля виникає в суспільно-практичній діяльності, є функцією свідомості</li></ul>`,src:"Рубінштейн С.Л. Основи загальної психології (1946); Іваніков В.А. Психологічні механізми вольової регуляції."},
+{cat:"Загальна психологія",q:"Вольові якості особистості та їх розвиток",a:`<p><strong>Вольові якості</strong> — стійкі риси особистості, що виявляються у вольовій регуляції. Поділяються на:</p><ul><li><strong>Цілеспрямованість</strong> — уміння ставити і досягати цілей</li><li><strong>Наполегливість</strong> — тривале подолання труднощів</li><li><strong>Витривалість</strong> (самовладання) — контроль над емоціями та поведінкою</li><li><strong>Рішучість</strong> — здатність швидко і впевнено приймати рішення</li><li><strong>Сміливість</strong> — дія попри страх</li><li><strong>Ініціативність</strong> — самостійність у постановці задач</li><li><strong>Самостійність</strong> — незалежність від сторонніх впливів</li></ul><p><strong>Розвиток:</strong> через постановку дедалі складніших завдань, фізичні та розумові навантаження, дотримання режиму, розвиток відповідальності.</p>`,src:"Рубінштейн С.Л. Основи загальної психології; Петровський О.В. Введення в психологію."},
+{cat:"Загальна психологія",q:"Несвідомі психічні процеси, їх загальна характеристика",a:`<p><strong>Несвідоме</strong> — сукупність психічних процесів, що протікають без усвідомлення суб'єктом.</p><p><strong>Рівні несвідомого (за Фрейдом):</strong></p><ul><li><strong>Передсвідоме</strong> — матеріал, який може бути усвідомлений при зусиллі</li><li><strong>Несвідоме</strong> — витіснені бажання, страхи; доступ до свідомості закритий</li></ul><p><strong>Прояви несвідомого:</strong> обмовки, описки (парапраксис), сновидіння, захисні механізми, інтуїція, звичні автоматизовані дії.</p><p><strong>Сучасні уявлення:</strong></p><ul><li>Когнітивне несвідоме — автоматична обробка інформації (Нісбетт, Вілсон)</li><li>Імпліцитна пам'ять — вміння та навички без усвідомлення</li><li>Прайминг-ефекти — вплив на поведінку без усвідомлення стимулу</li></ul>`,src:"Фрейд З. Вступ до психоаналізу (1917); Kihlstrom J.F. The cognitive unconscious (1987)."},
+{cat:"Загальна психологія",q:"Поняття, структура та розвиток Я-концепції",a:`<p><strong>Я-концепція</strong> — відносно стійка і усвідомлена система уявлень людини про саму себе, що включає когнітивний, оцінювальний і поведінковий компоненти.</p><p><strong>Структура (за Бернсом, 1986):</strong></p><ul><li><strong>Реальне «Я»</strong> — яким я є насправді</li><li><strong>Ідеальне «Я»</strong> — яким хочу бути</li><li><strong>Дзеркальне «Я»</strong> — яким мене бачать інші</li></ul><p><strong>Компоненти Я-концепції:</strong></p><ul><li>Когнітивний — образ власних якостей, зовнішності, ролей</li><li>Емоційно-оцінний (самооцінка) — задоволеність собою</li><li>Поведінковий — дії, що випливають із самооцінки</li></ul><p><strong>Розвиток:</strong> від немовляти (відсутність Я) → 1,5–2 роки (впізнавання себе у дзеркалі) → дошкілля (початкова самооцінка) → підлітковий вік (пошук ідентичності) → доросле (стабілізація).</p>`,src:"Бернс Р. Розвиток Я-концепції та виховання (1986); Еріксон Е. Дитинство і суспільство."},
+{cat:"Загальна психологія",q:"Соціалізація: поняття, фактори, стадії, інститути",a:`<p><strong>Соціалізація</strong> — процес засвоєння індивідом соціальних норм, цінностей, ролей і досвіду, через який він стає повноправним членом суспільства.</p><p><strong>Фактори соціалізації (Мудрик А.В.):</strong></p><ul><li>Мегафактори (космос, планета, суспільство)</li><li>Макрофактори (країна, держава, суспільство, культура)</li><li>Мезофактори (регіон, ЗМІ, субкультура)</li><li>Мікрофактори (сім'я, школа, друзі)</li></ul><p><strong>Стадії (Еріксон):</strong> дитинство → дошкілля → молодший шкільний → підлітковий → рання дорослість → середня дорослість → пізня дорослість.</p><p><strong>Інститути соціалізації:</strong> сім'я (первинна), школа, група однолітків, ЗМІ, релігійні та громадські організації, виробничий колектив.</p>`,src:"Мудрик А.В. Соціалізація людини (2004); Кон І.С. Соціологія особистості (1967)."},
+{cat:"Загальна психологія",q:"Розвиток психіки тварин та розвиток свідомості людини",a:`<p>Психіка тварин розвивалася поступово:</p><ul><li><strong>Подразливість</strong> (найпростіші) — реакція на біологічно значущі подразники</li><li><strong>Відчуття</strong> (черв'яки, комахи) — диференційоване відображення</li><li><strong>Сприйняття</strong> (птахи, ссавці) — цілісний образ ситуації</li><li><strong>Інтелект</strong> (вищі ссавці, примати) — дворофазні рішення, інсайт</li></ul><p>Концепцій виникнення свідомості: <strong>трудова теорія</strong> (Маркс–Енгельс): праця, мова і суспільне життя сформували свідомість людини. <strong>Виготський</strong>: вищі психічні функції мають соціальний і знаряддєво-опосередкований характер.</p><p>Свідомість людини відрізняється від психіки тварин: мова, самосвідомість, абстрактне мислення, планування, культурно-історична обумовленість.</p>`,src:"Леонтьєв О.М. Проблеми розвитку психіки (1972); Виготський Л.С. Зібрання творів Т.3."},
+
+// ===== ДИФЕРЕНЦІЙНА ТА ОСОБИСТІСНА ПСИХОЛОГІЯ =====
+{cat:"Диференційна та особистісна психологія",q:"Критерії виділення типів темпераменту за І.П.Павловим",a:`<p>Павлов розробив фізіологічну основу типології темпераментів, виходячи з властивостей <strong>нервової системи</strong>:</p><ul><li><strong>Сила</strong> — здатність витримувати сильні та тривалі подразники</li><li><strong>Врівноваженість</strong> — рівновага збудження та гальмування</li><li><strong>Рухливість</strong> — швидкість зміни процесів збудження і гальмування</li></ul><p><strong>Типи ВНД і відповідні темпераменти:</strong></p><ul><li><strong>Сильний, врівноважений, рухливий</strong> → Сангвінік</li><li><strong>Сильний, врівноважений, інертний</strong> → Флегматик</li><li><strong>Сильний, неврівноважений</strong> → Холерик</li><li><strong>Слабкий</strong> → Меланхолік</li></ul><p>Павлов пов'язав свою типологію з класичною схемою Гіппократа.</p>`,src:"Павлов І.П. Загальні типи вищої нервової діяльності тварин і людини (1935)."},
+{cat:"Диференційна та особистісна психологія",q:"Критерії виділення конституційних типів темпераменту (Е. Кречмер, В. Шелдон)",a:`<p><strong>Кречмер (1921)</strong> пов'язав будову тіла з темпераментом і психічними розладами:</p><ul><li><strong>Астенік</strong> (стрункий, вузькоплечий) → шизотимний темперамент (замкнений, холодний)</li><li><strong>Атлетик</strong> (широкоплечий, мускулистий) → іксотимний (спокійний, маловразливий)</li><li><strong>Пікнік</strong> (округлий, повний) → циклотимний (товариський, емоційний)</li></ul><p><strong>Шелдон (1940-і)</strong> визначав соматотипи за переважанням зародкового листка:</p><ul><li><strong>Ендоморф</strong> (округле тіло) → вісцеротонія (розслабленість, любов до комфорту)</li><li><strong>Мезоморф</strong> (мускулистий) → соматотонія (наполегливість, прагнення домінувати)</li><li><strong>Ектоморф</strong> (худорлявий) → церебротонія (заглибленість у себе, підвищена чутливість)</li></ul><p><em>Критика:</em> кореляції між будовою тіла і особистістю дуже низькі; ці теорії мають обмежену наукову підтримку.</p>`,src:"Kretschmer E. Physique and Character (1921); Sheldon W. Varieties of Temperament (1942)."},
+{cat:"Диференційна та особистісна психологія",q:"Типологія характеру за К. Леонгардом, критерії виділення типів акцентуації",a:`<p><strong>Акцентуації характеру</strong> (Леонгард, 1968) — крайні варіанти норми, за яких окремі риси характеру гіпертрофовані.</p><p>Леонгард виділив <strong>12 типів акцентуацій</strong>:</p><ul><li><strong>Гіпертимний</strong> — постійно піднесений настрій, активність, балакучість</li><li><strong>Дистимний</strong> — понижений настрій, замкнутість, сумлінність</li><li><strong>Циклотимний</strong> — чергування гіпертимних та дистимних фаз</li><li><strong>Збудливий</strong> — імпульсивність, конфліктність</li><li><strong>Застрягаючий</strong> — інертність, образливість, підозрілість</li><li><strong>Педантичний</strong> — добросовісність, ригідність, буквоїдство</li><li><strong>Тривожний</strong> — боязкість, невпевненість у собі</li><li><strong>Емотивний</strong> — глибокі переживання, чутливість</li><li><strong>Демонстративний</strong> — прагнення бути в центрі уваги</li><li><strong>Екзальтований</strong> — яскраві реакції на події</li><li><strong>Екстравертований та інтровертований</strong> типи</li></ul>`,src:"Leonhard K. Akzentuierte Persönlichkeiten (1968); Лічко О.Є. Психопатії та акцентуації характеру у підлітків (1977)."},
+{cat:"Диференційна та особистісна психологія",q:"Структура особистості за З.Фрейдом та К.Г.Юнгом",a:`<p><strong>Фрейд — топографічна та структурна моделі:</strong></p><ul><li>Рання модель: <strong>свідоме – передсвідоме – несвідоме</strong></li><li>Структурна (1923): <strong>Ід</strong> (несвідомі потяги, принцип задоволення) → <strong>Его</strong> (раціональний посередник, принцип реальності) → <strong>Супер-Его</strong> (інтерналізовані норми, совість)</li></ul><p><strong>Юнг — аналітична психологія:</strong></p><ul><li><strong>Его</strong> — центр свідомості</li><li><strong>Особисте несвідоме</strong> — витіснений матеріал, комплекси</li><li><strong>Колективне несвідоме</strong> — архетипи, спільні для всього людства</li><li><strong>Основні архетипи:</strong> Персона (маска), Тінь (темний двійник), Аніма/Анімус (жіночий/чоловічий початок), Самість (ціле)</li><li><strong>Типи:</strong> екстраверсія / інтроверсія + 4 функції (мислення, відчуття, інтуїція, емоції) → 8 типів</li></ul>`,src:"Freud S. Das Ich und das Es (1923); Jung C.G. Psychological Types (1921)."},
+{cat:"Диференційна та особистісна психологія",q:"Загальна характеристика гуманістичної психології",a:`<p><strong>Гуманістична психологія</strong> сформувалась у 1950–60-х рр. як «третя сила» після психоаналізу і біхевіоризму (А. Маслоу, К. Роджерс, Р. Мей, Г. Олпорт).</p><p><strong>Основні положення:</strong></p><ul><li>Людина — унікальна, цілісна, принципово добра істота з природним прагненням до зростання</li><li>Предмет: суб'єктивний досвід, смисл, цінності, самоактуалізація</li><li>Відкидається детермінізм психоаналізу і механістичність біхевіоризму</li><li>Феноменологічний метод — важлива суб'єктивна картина світу людини</li></ul><p><strong>Маслоу:</strong> пірамада потреб (1943), пік-переживання, якості самоактуалізованої особистості.</p><p><strong>Роджерс:</strong> клієнто-центрована терапія, «повністю функціонуюча людина», умови безумовного прийняття.</p>`,src:"Maslow A. A theory of human motivation (1943); Rogers C. On Becoming a Person (1961)."},
+{cat:"Диференційна та особистісна психологія",q:"Психологічна концепція Карен Хорні",a:`<p>Карен Хорні (1885–1952) — неофрейдистка, яка переглянула класичний психоаналіз, відкинувши біологічний детермінізм Фрейда.</p><p><strong>Ключові поняття:</strong></p><ul><li><strong>Базова тривога</strong> — відчуття дитиною ізольованості та безпомічності у ворожому світі (виникає через холодність, недоброзичливість батьків)</li><li><strong>Невротичні потреби</strong> (10 ірраціональних потреб): наприклад, потреба у прихильності, владі, незалежності, досконалості та ін.</li><li><strong>Три типи невротичних рухів:</strong><ul><li>«До людей» (покірний тип) — пошук захисту в приналежності</li><li>«Проти людей» (агресивний тип) — конкурентність, контроль</li><li>«Від людей» (відчужений тип) — ізоляція, самодостатність</li></ul></li><li><strong>Ідеалізоване «Я»</strong> vs <strong>реальне «Я»</strong> — невроз виникає з розриву між ними</li></ul>`,src:"Horney K. Our Inner Conflicts (1945); Neurosis and Human Growth (1950)."},
+
+// ===== ПСИХОДІАГНОСТИКА =====
+{cat:"Психодіагностика",q:"Предмет психодіагностики. Об'єктивність, валідність та надійність діагностичного методу",a:`<p><strong>Психодіагностика</strong> — розділ психології, що розробляє методи виявлення та вимірювання індивідуально-психологічних особливостей особистості.</p><p><strong>Предмет:</strong> психологічні ознаки і закономірності їх вимірювання.</p><p><strong>Основні вимоги до методик:</strong></p><ul><li><strong>Об'єктивність</strong> — результати не залежать від суб'єктивності дослідника; стандартизовані процедура і обробка</li><li><strong>Валідність</strong> — методика вимірює саме те, для чого призначена. Типи: змістова, критеріальна (конкурентна, прогностична), конструктна</li><li><strong>Надійність</strong> — стабільність і відтворюваність результатів. Визначається методом ретесту, паралельних форм, внутрішньої узгодженості (α Кронбаха)</li><li><strong>Репрезентативність норм</strong> — наявність стандартизованих нормативів</li><li><strong>Практичність</strong> — зручність застосування</li></ul>`,src:"Бурлачук Л.Ф. Психодіагностика. — СПб.: Пітер, 2006; Anastasi A. Psychological Testing (7th ed., 1997)."},
+{cat:"Психодіагностика",q:"Проективні методи у психодіагностиці. Переваги та недоліки, класифікація",a:`<p><strong>Проективні методики</strong> — засновані на феномені проекції: людина приписує стимулу свої несвідомі прагнення, страхи, потреби.</p><p><strong>Класифікація (Ліндзі, 1959):</strong></p><ul><li><strong>Конститутивні</strong> — надати структуру аморфному матеріалу (тест Роршаха)</li><li><strong>Конструктивні</strong> — скласти щось із частин (World Test)</li><li><strong>Інтерпретативні</strong> — пояснити/витлумачити (ТАТ)</li><li><strong>Катартичні</strong> — розігрування ситуацій (психодрама)</li><li><strong>Рефрактивні</strong> — аналіз стилю (графологія)</li><li><strong>Адитивні</strong> — доповнити незакінчений матеріал (незакінчені речення)</li><li><strong>Експресивні</strong> — вільна творча діяльність (малюнок, живопис)</li></ul><p><strong>Переваги:</strong> виявляють несвідоме, складно фальсифікувати, цілісний образ особистості.</p><p><strong>Недоліки:</strong> низька стандартизованість, суб'єктивність інтерпретацій, невисока надійність і валідність у частини методик.</p>`,src:"Бурлачук Л.Ф. Психодіагностика (2006); Lindzey G. Projective techniques and cross-cultural research (1961)."},
+{cat:"Психодіагностика",q:"Опитувальники рис та особистісні типологічні опитувальники",a:`<p><strong>Особистісні опитувальники</strong> — стандартизовані методики у форматі самозвіту для вимірювання особистісних рис.</p><p><strong>Опитувальники рис:</strong></p><ul><li><strong>16PF Кеттела</strong> — 16 факторів особистості (A–Q4): відкритість, стабільність, домінантність тощо</li><li><strong>NEO-PI-R (Коста і МакРе)</strong> — «Велика п'ятірка»: Нейротизм, Екстраверсія, Відкритість, Доброзичливість, Сумлінність</li><li><strong>Айзенка EPQ</strong> — екстраверсія, нейротизм, психотизм</li></ul><p><strong>Типологічні опитувальники:</strong></p><ul><li><strong>MMPI</strong> (Міннесотський багатофазний) — 10 клінічних шкал + шкали достовірності; широко застосовується в клінічній діагностиці</li><li><strong>MBTI</strong> (Майерс-Бріггс) — 16 типів на основі Юнга; популярний, але критикується за низьку надійність</li></ul>`,src:"Cattell R.B. The Scientific Analysis of Personality (1965); Costa P.T., McCrae R.R. NEO-PI-R Manual (1992); MMPI — Hathaway S.R., McKinley J.C. (1943)."},
+{cat:"Психодіагностика",q:"Інтелект і його вимірювання. Інтелектуальні тести",a:`<p><strong>Інтелект</strong> — здатність до навчання, вирішення нових задач, абстрактного мислення і адаптації до нових ситуацій.</p><p><strong>IQ (коефіцієнт інтелекту)</strong> — стандартизований показник; середнє = 100, SD = 15. Запропонував Штерн В. (1912), метод: МВ/МХ × 100.</p><p><strong>Основні тести:</strong></p><ul><li><strong>Шкали Векслера</strong> (WAIS, WISC, WPPSI) — вербальний і невербальний IQ, 10–15 субтестів; найбільш надійні і поширені</li><li><strong>Матриці Равена</strong> — невербальний, «культурно-незалежний» тест; вимірює «fluid intelligence»</li><li><strong>Тест Стенфорд-Біне</strong> (оригінальна шкала Біне-Сімона 1905; переробка 1916) — перший стандартизований тест інтелекту</li><li><strong>Тест Амтхауера</strong> (IST) — 9 субтестів, структура інтелекту</li></ul><p><strong>Теорії інтелекту:</strong> g-фактор Спірмена, теорія первинних здібностей Терстона, тріархічна (Стернберг), множинного інтелекту (Гарднер).</p>`,src:"Wechsler D. The Measurement of Adult Intelligence (1939); Raven J. Raven Progressive Matrices (1938); Spearman C. (1904)."},
+{cat:"Психодіагностика",q:"Методи діагностики уваги",a:`<p>Основні методики для дослідження уваги:</p><ul><li><strong>Таблиці Шульте</strong> — вимірюють швидкість переключення і розподіл уваги; 25 чисел в хаотичному порядку</li><li><strong>Коректурна проба Бурдона</strong> — тривалість і стійкість уваги; закреслити певні символи за обмежений час</li><li><strong>Тест Мюнстерберга</strong> — вибіркова увага; знайти слова серед рядка букв</li><li><strong>Тест «Проставлення чисел» (D2 Brickenkamp)</strong> — концентрація і стійкість</li><li><strong>Тест Струпа</strong> — інтерференція, вибіркова увага і когнітивний контроль; назвати колір чорнила, ігноруючи написане слово</li><li><strong>Відлік від 100 по 7</strong> (клінічний метод) — концентрація уваги і робоча пам'ять</li></ul>`,src:"Рубінштейн С.Я. Методики для дослідження патології мислення (1970); Lezak M.D. Neuropsychological Assessment (2004)."},
+{cat:"Психодіагностика",q:"Методи діагностики пам'яті",a:`<p><strong>Методики дослідження пам'яті:</strong></p><ul><li><strong>10 слів Лурія</strong> — обсяг короткочасної і довготривалої пам'яті; заучування 10 слів, 5 спроб + відстрочене відтворення</li><li><strong>Субтест «Цифровий ряд» (Векслер)</strong> — обсяг оперативної пам'яті (пряме і зворотне відтворення)</li><li><strong>Тест Бентона</strong> — зорова пам'ять; відтворити фігури по пам'яті</li><li><strong>Методика Джекобса</strong> — обсяг короткочасної слухової пам'яті</li><li><strong>Піктограма</strong> — опосередкована пам'ять; намалювати образ для кожного слова і потім відтворити за малюнком</li><li><strong>Тест Rey Auditory Verbal Learning Test (RAVLT)</strong> — криві навчання, ретроактивне і проактивне гальмування</li></ul>`,src:"Лурія О.Р. Нейропсихологія пам'яті (1974); Lezak M.D. Neuropsychological Assessment."},
+{cat:"Психодіагностика",q:"Психологічний діагноз. Типи психологічних діагнозів",a:`<p><strong>Психологічний діагноз</strong> — структурований опис психічного стану людини, отриманий за допомогою стандартизованих методів.</p><p><strong>Рівні/типи (за Бурлачуком і Морозовим):</strong></p><ul><li><strong>Симптоматичний (емпіричний)</strong> — обмежується описом виявлених симптомів і ознак без пояснення їх причин</li><li><strong>Етіологічний</strong> — встановлення причин і походження виявлених особливостей</li><li><strong>Типологічний</strong> — визначення місця психологічних особливостей у загальній системі (тип особистості, характеру тощо)</li></ul><p><strong>Структура психологічного висновку:</strong> запит → методи → результати → інтерпретація → рекомендації.</p><p><strong>Відмінність від медичного діагнозу:</strong> психологічний діагноз не є нозологічним, спирається на виміряні психологічні конструкти, а не патологічні категорії.</p>`,src:"Бурлачук Л.Ф. Психодіагностика (2006); Захаров А.І. Психологічна діагностика (1993)."},
+{cat:"Психодіагностика",q:"Психодіагностика темпераменту та характеру особистості",a:`<p><strong>Методики діагностики темпераменту:</strong></p><ul><li><strong>Опитувальник Айзенка (EPI/EPQ)</strong> — екстраверсія–інтроверсія, нейротизм, психотизм; пов'язані з типами ВНД</li><li><strong>Опитувальник Стреляу</strong> — сила збудження/гальмування, рухливість нервових процесів</li><li><strong>Опитувальник формально-динамічних властивостей індивідуальності (ОФДВНІ) Русалова</strong></li></ul><p><strong>Методики діагностики характеру і акцентуацій:</strong></p><ul><li><strong>Патохарактерологічний діагностичний опитувальник (ПДО) Лічко</strong> — типи акцентуацій у підлітків</li><li><strong>Характерологічний опитувальник Леонгарда</strong> — 12 типів акцентуацій</li><li><strong>Опитувальник Шмішека</strong> — 10 шкал акцентуацій (спрощений Леонгард)</li><li><strong>MMPI</strong> — клінічні шкали + шкали характеру</li></ul>`,src:"Лічко О.Є. Психопатії та акцентуації характеру у підлітків (1977); Eysenck H.J. The Structure of Human Personality (1953)."},
+
+// ===== ЮРИДИЧНА ПСИХОЛОГІЯ =====
+{cat:"Юридична психологія",q:"Мета та завдання навчальної дисципліни «Юридична психологія», історія розвитку",a:`<p><strong>Юридична психологія</strong> — наукова і прикладна дисципліна, що вивчає психологічні закономірності системи «людина–право».</p><p><strong>Завдання:</strong> психологічне забезпечення правозастосовної діяльності; вивчення психологічних аспектів злочинності; розробка психологічних методів у слідчій, судовій та пенітенціарній практиці; профілактика правопорушень.</p><p><strong>Історія:</strong></p><ul><li>1792 — К. Еккартсгаузен «Про необхідність психологічних знань для оцінки злочинів»</li><li>1808 — Й. Шауманн «Ідеї з кримінальної психології»</li><li>Кінець XIX ст. — Г. Гросс, В. Штерн (психологія свідчень)</li><li>1920-і — розвиток у СРСР (Брусиловський, Бехтєрєв)</li><li>1964 — виокремлення юридичної психології як самостійної дисципліни у ВНЗ СРСР</li></ul>`,src:"Васильєв В.Л. Юридична психологія. — СПб.: Пітер, 2009; Коновалова В.Є. Юридична психологія (2004)."},
+{cat:"Юридична психологія",q:"Психологічні особливості особи слідчого",a:`<p><strong>Особистість слідчого</strong> визначає ефективність розслідування. Ключові якості:</p><ul><li><strong>Пізнавальні:</strong> розвинена спостережливість, аналітичне мислення, пам'ять, уважність до деталей</li><li><strong>Комунікативні:</strong> вміння встановлювати психологічний контакт, емпатія, тактовність</li><li><strong>Вольові:</strong> наполегливість, рішучість, самовладання в екстремальних ситуаціях</li><li><strong>Організаційні:</strong> планування, координація діяльності, контроль виконання</li><li><strong>Морально-правові:</strong> відповідальність, принциповість, справедливість, дотримання закону</li></ul><p><strong>Синдром «ригідного слідчого»</strong> — небезпека формування стереотипного мислення, коли версія не переглядається попри нові факти.</p><p>Слідчий повинен мати стресостійкість, оскільки робота пов'язана з хронічним психологічним навантаженням.</p>`,src:"Васильєв В.Л. Юридична психологія (2009); Шиханцов Г.Г. Юридична психологія (2006)."},
+{cat:"Юридична психологія",q:"Психологічні основи допиту",a:`<p><strong>Допит</strong> — слідча дія, мета якої отримати правдиві свідчення. Психологічна сторона — встановлення контакту і управління комунікацією.</p><p><strong>Стадії психологічного контакту при допиті:</strong></p><ol><li>Встановлення психологічного контакту (довіра, нейтральна бесіда)</li><li>Основна частина — отримання вільної розповіді</li><li>Уточнення показань, запитання</li><li>Завершення і фіксація</li></ol><p><strong>Психологічні прийоми:</strong></p><ul><li>«Детальна деталізація» — неправдиве важко деталізувати</li><li>Пред'явлення доказів у певній послідовності</li><li>Залишення «пастки» — перевіряємо відомим фактом</li><li>Емоційний підхід — зняття психологічного захисту</li></ul><p><em>Застосовуються виключно правомірні психологічні методи; психологічний тиск і маніпуляції є незаконними (КПК України).</em></p>`,src:"Васильєв В.Л. Юридична психологія (2009); Бедь В.В. Юридична психологія (2004)."},
+{cat:"Юридична психологія",q:"Поняття і компетенція судово-психологічної експертизи",a:`<p><strong>Судово-психологічна експертиза (СПЕ)</strong> — процесуальна дія: психолог як спеціаліст дає науково обґрунтований висновок про психологічні характеристики учасника процесу за призначенням суду або слідчого.</p><p><strong>Компетенція СПЕ:</strong></p><ul><li>Встановлення психологічного стану особи в момент скоєння злочину</li><li>Здатність підозрюваного/свідка правильно сприймати і відтворювати обставини</li><li>Рівень розвитку неповнолітнього (при відставанні)</li><li>Наявність афекту, стресу, фрустрації</li><li>Психологічне насильство, сексуальне насильство щодо жертви</li><li>Схильність до суїциду</li></ul><p><strong>Межі компетенції:</strong> психолог не ставить медичних (психіатричних) діагнозів — це компетенція психіатричної експертизи.</p>`,src:"Сафуанов Ф.С. Судово-психологічна експертиза (2014); КПК України."},
+{cat:"Юридична психологія",q:"Психологія особистості засудженого",a:`<p>Особистість засудженого вивчається в рамках <strong>пенітенціарної психології</strong>.</p><p><strong>Психологічні особливості:</strong></p><ul><li>Деформація ціннісно-нормативної системи (правовий нігілізм, кримінальні цінності)</li><li>Труднощі соціальної адаптації, низька або завищена самооцінка</li><li>Підвищена тривожність, агресивність, імпульсивність</li><li>Специфічні механізми психологічного захисту: раціоналізація злочину, перекладання відповідальності</li><li>«Тюремний синдром» — пасивність, залежність від зовнішньої регуляції</li></ul><p><strong>Типологія засуджених</strong> за ступенем виправлення: глибоко перевихований → перевихований → нейтральний → не виправлений → активно негативний.</p><p><strong>Ресоціалізація</strong> — відновлення соціально прийнятної поведінки через навчання, трудову діяльність, психокорекцію.</p>`,src:"Пирожков В.Ф. Закономірності злочинного середовища (2002); Синьов В.М. Кримінальна педагогіка та психологія."},
+
+// ===== ПСИХОТЕРАПІЯ =====
+{cat:"Психотерапія та корекція",q:"Визначення психотерапії та психокорекції. Співвідношення понять",a:`<p><strong>Психотерапія</strong> — система психологічних впливів, що має на меті лікування (корекцію) психічних та психосоматичних розладів.</p><p><strong>Психологічне консультування</strong> — допомога психічно здоровій людині в усвідомленні та вирішенні конкретних проблем і в розвитку.</p><p><strong>Психокорекція</strong> — система заходів, спрямованих на виправлення відхилень у психічному розвитку (частіше вживається щодо дітей).</p><p><strong>Відмінності:</strong></p><ul><li>Психотерапія — зазвичай при патології; може проводитись лікарем або ліцензованим психологом</li><li>Психокорекція — при відхиленнях у нормі; переважно психолог</li><li>Консультування — при ситуативних проблемах; психолог</li></ul><p>Кордони понять розмиті: у практиці часто використовуються як синоніми.</p>`,src:"Карвасарський Б.Д. Психотерапія (2002); Бурлачук Л.Ф. та ін. Основи психотерапії (2003)."},
+{cat:"Психотерапія та корекція",q:"Основні теоретичні положення, цілі та методи психодинамічного напрямку",a:`<p><strong>Психодинамічний напрямок</strong> заснований на психоаналізі Фрейда і включає класичний психоаналіз, аналітичну психологію Юнга, індивідуальну психологію Адлера, неофрейдизм.</p><p><strong>Основні положення:</strong></p><ul><li>Поведінка визначається несвідомими силами (потяги, конфлікти)</li><li>Патологія — результат витіснених конфліктів, зазвичай з дитинства</li><li>Захисні механізми Его спотворюють реальність</li></ul><p><strong>Цілі терапії:</strong> усвідомлення несвідомого, опрацювання трансферу, подолання опорів, зміна структури особистості.</p><p><strong>Методи:</strong></p><ul><li>Вільні асоціації — пацієнт говорить все, що спадає на думку</li><li>Аналіз сновидінь</li><li>Аналіз трансферу (перенесення) та контртрансферу</li><li>Інтерпретація</li><li>Конфронтація і кларифікація</li></ul>`,src:"Freud S. Introductory Lectures on Psychoanalysis (1917); Карвасарський Б.Д. Психотерапія (2002)."},
+{cat:"Психотерапія та корекція",q:"Основні положення, цілі та методи поведінкового напрямку",a:`<p><strong>Поведінкова терапія</strong> (біхевіоральна) заснована на теоріях навчання — класичному і оперантному обумовленні.</p><p><strong>Основні положення:</strong></p><ul><li>Патологічна поведінка — результат неадаптивного научіння, а не глибинних конфліктів</li><li>Те, що було вивчено, може бути «розвивчено» (відучено)</li><li>Акцент на конкретній проблемній поведінці, вимірних цілях</li></ul><p><strong>Методи:</strong></p><ul><li><strong>Систематична десенсибілізація</strong> (Вольпе) — поетапне зниження тривоги</li><li><strong>Флудинг / імплозія</strong> — занурення у страхову ситуацію</li><li><strong>Жетонна економіка</strong> — система підкріплень</li><li><strong>Тренінг соціальних навичок</strong></li><li><strong>Аверсивна терапія</strong> — поєднання небажаної поведінки з неприємним стимулом</li><li><strong>Біофідбек</strong></li></ul>`,src:"Wolpe J. Psychotherapy by reciprocal inhibition (1958); Skinner B.F. Science and Human Behavior (1953)."},
+{cat:"Психотерапія та корекція",q:"Основні положення, цілі та методи когнітивно-поведінкового підходу",a:`<p><strong>КПТ (когнітивно-поведінкова терапія)</strong> — синтез когнітивної (Бек, Елліс) і поведінкової терапії; найбільш доказова на сьогодні.</p><p><strong>Основні положення:</strong></p><ul><li>Не ситуація, а <em>інтерпретація</em> ситуації визначає емоційну реакцію</li><li>Когнітивні спотворення (автоматичні думки, дисфункційні переконання) підтримують розлади</li><li>Зміна думок → зміна емоцій і поведінки</li></ul><p><strong>Методи:</strong></p><ul><li><strong>Сократівський діалог</strong> — дослідження думок за допомогою запитань</li><li><strong>Когнітивна реструктуризація</strong> — оскарження автоматичних думок</li><li><strong>Ведення щоденника думок</strong></li><li><strong>Поведінкові експерименти</strong></li><li><strong>Техніки РЕТ Елліса</strong> — виявлення ірраціональних переконань</li><li><strong>АВС-модель</strong>: A (подія) → B (переконання) → C (наслідки)</li></ul>`,src:"Beck A.T. Cognitive Therapy of Depression (1979); Ellis A. Reason and Emotion in Psychotherapy (1962)."},
+{cat:"Психотерапія та корекція",q:"Основні положення, цілі та методи гуманістичного напрямку",a:`<p>Гуманістична психотерапія виникла в 1950-х рр., засновники — Роджерс, Маслоу, Перлз.</p><p><strong>Основні положення:</strong></p><ul><li>Людина принципово добра і прагне до зростання</li><li>Проблеми виникають через умовне прийняття і умовну цінність (батьки люблять лише «хорошу» дитину)</li><li>Терапевт — не авторитет, а рівний партнер у діалозі</li></ul><p><strong>Клієнт-центрована терапія Роджерса:</strong></p><ul><li>Три умови терапевта: безумовне позитивне прийняття, емпатія, конгруентність (автентичність)</li><li>Не директивний підхід; клієнт сам знаходить рішення</li></ul><p><strong>Гештальт-терапія (Перлз):</strong></p><ul><li>Акцент на «тут і зараз», завершення незакінчених ситуацій</li><li>Техніки: «порожній стілець», монодрама, усвідомлення тіла</li></ul>`,src:"Rogers C. Client-Centered Therapy (1951); Perls F. Gestalt Therapy (1951)."},
+{cat:"Психотерапія та корекція",q:"Основні положення, цілі та методи екзистенційного напрямку",a:`<p><strong>Екзистенційна психотерапія</strong> (Ялом, Франкл, Бінсвангер, Мей) — ґрунтується на екзистенційній філософії (Гайдеггер, Сартр, К'єркегор).</p><p><strong>«Екзистенційні данності» (Ялом, 1980):</strong></p><ul><li>Смерть — усвідомлення конечності дає смисл</li><li>Свобода — ми несемо відповідальність за власні вибори</li><li>Ізоляція — фундаментальна самотність існування</li><li>Безсмісловність — людина повинна сама створювати смисл</li></ul><p><strong>Логотерапія Франкла:</strong></p><ul><li>Воля до смислу — головна людська мотивація</li><li>«Екзистенційний вакуум» → ноогенний невроз</li><li>Техніки: дерефлексія, парадоксальна інтенція</li></ul><p><strong>Цілі:</strong> розширення самосвідомості, прийняття відповідальності, пошук смислу.</p>`,src:"Yalom I. Existential Psychotherapy (1980); Frankl V. Man's Search for Meaning (1946)."},
+
+// ===== ВІКОВА ПСИХОЛОГІЯ =====
+{cat:"Вікова психологія",q:"Структура сучасної вікової психології",a:`<p><strong>Вікова психологія</strong> (психологія розвитку) вивчає закономірності психічного розвитку людини протягом всього життя.</p><p><strong>Розділи:</strong></p><ul><li><strong>Перинатальна і пренатальна психологія</strong> — до народження і навколологовий період</li><li><strong>Дитяча психологія</strong> — від народження до 11 років</li><li><strong>Психологія підліткового та юнацького віку</strong></li><li><strong>Психологія дорослості</strong> (акмеологія) — зрілість</li><li><strong>Геронтопсихологія</strong> — психологія старіння і старості</li></ul><p><strong>Зв'язки з іншими галузями:</strong> педагогічна психологія, клінічна, нейропсихологія, соціальна психологія.</p><p><strong>Методологічні засади:</strong> принцип розвитку, принцип цілісності, принцип детермінізму, принцип єдності свідомості і діяльності.</p>`,src:"Кле М. Психологія підлітка (1991); Ліфінцева Н.І. Вікова та педагогічна психологія (2009)."},
+{cat:"Вікова психологія",q:"Загальна характеристика віку (календарний, біологічний, психологічний, соціальний, суб'єктивний)",a:`<p>Вік є багатовимірною категорією. Розрізняють:</p><ul><li><strong>Календарний (хронологічний) вік</strong> — кількість прожитих років; зовнішній об'єктивний показник</li><li><strong>Біологічний вік</strong> — стан організму відносно вікових норм; визначається за фізіологічними показниками (кістковий вік, ЧСС, гормони). Може випереджати або відставати від хронологічного</li><li><strong>Психологічний вік</strong> — рівень психічного розвитку (пам'ять, інтелект, особистість) відносно нормативних характеристик</li><li><strong>Соціальний вік</strong> — відповідність соціальним ролям і очікуванням суспільства (студент, батько, пенсіонер)</li><li><strong>Суб'єктивний вік</strong> — внутрішнє самовідчуття власного віку; часто розходиться з хронологічним</li></ul>`,src:"Слободчіков В.І., Ісаєв Є.І. Психологія людини (1995); Кулагіна І.Ю. Вікова психологія (1998)."},
+{cat:"Вікова психологія",q:"Чинники психічного розвитку. Рушійні сили психічного розвитку",a:`<p><strong>Чинники психічного розвитку:</strong></p><ul><li><strong>Біологічний</strong> (природний) — спадковість, дозрівання мозку і організму</li><li><strong>Соціальний</strong> — умови виховання, навчання, культура, спілкування</li><li><strong>Активність самої людини</strong> (власна діяльність)</li></ul><p><strong>Рушійні сили (Виготський):</strong></p><ul><li>Протиріччя між наявними психічними можливостями і новими вимогами діяльності</li><li><strong>Зона найближчого розвитку (ЗНР)</strong> — відстань між тим, що дитина вміє сама, і тим, що може з допомогою дорослого; навчання має йти попереду розвитку</li></ul><p><strong>Кризи розвитку</strong> — переломні моменти, що знаменують перехід на новий рівень: 1 рік, 3 роки, 7 років, підлітковий, 17 р., 30 р. тощо.</p>`,src:"Виготський Л.С. Психологія. — М., 2000; Ельконін Д.Б. Психологія гри (1978)."},
+{cat:"Вікова психологія",q:"Періодизація життєвого шляху (Е. Еріксон)",a:`<p>Еріксон (1963) описав <strong>8 стадій психосоціального розвитку</strong>, кожна з яких — криза між двома полюсами:</p><ol><li><strong>0–1 р.</strong> — Базова довіра vs недовіра → надія</li><li><strong>1–3 р.</strong> — Автономія vs сором і сумнів → воля</li><li><strong>3–6 р.</strong> — Ініціатива vs провина → мета</li><li><strong>6–12 р.</strong> — Старанність vs неповноцінність → компетентність</li><li><strong>12–20 р.</strong> — Ідентичність vs рольова плутанина → вірність</li><li><strong>20–40 р.</strong> — Близькість vs ізоляція → кохання</li><li><strong>40–65 р.</strong> — Генеративність vs стагнація → турбота</li><li><strong>65+</strong> — Цілісність vs відчай → мудрість</li></ol><p>Успішне вирішення кожної кризи → чеснота (сила). Невирішена криза → труднощі на наступних стадіях.</p>`,src:"Erikson E.H. Childhood and Society (1950); Identity and the Life Cycle (1959)."},
+{cat:"Вікова психологія",q:"Загальна характеристика підліткового віку",a:`<p>Підлітковий вік: <strong>11–16 років</strong> (різні автори дають різні межі).</p><p><strong>Центральні новоутворення:</strong></p><ul><li>Почуття дорослості (Ельконін)</li><li>Формування ідентичності (Еріксон)</li><li>Розвиток самосвідомості та «Я-концепції»</li></ul><p><strong>Когнітивний розвиток:</strong> перехід до формально-логічного (гіпотетичного) мислення за Піаже.</p><p><strong>Соціальний розвиток:</strong> група однолітків стає провідним референтним середовищем; конфлікти з батьками.</p><p><strong>Провідна діяльність:</strong> інтимно-особистісне спілкування (Ельконін).</p><p><strong>Фізичний розвиток:</strong> статеве дозрівання, швидкий ріст, гормональні зміни → емоційна нестабільність.</p>`,src:"Ельконін Д.Б. Вибрані психологічні праці (1989); Кле М. Психологія підлітка (1991)."},
+{cat:"Вікова психологія",q:"Специфіка кризи 3-х років",a:`<p>Криза 3 років — перехідний період між раннім і дошкільним віком. Виготський описав <strong>«семизір'я симптомів»</strong>:</p><ol><li><strong>Негативізм</strong> — відмова від вимог дорослих (не через небажання, а щоб заперечити)</li><li><strong>Впертість</strong> — наполягання на своєму</li><li><strong>Норовистість</strong> — спрямована проти всього укладу сім'ї</li><li><strong>Свавілля</strong> — прагнення до самостійності</li><li><strong>Протест-бунт</strong> — стан конфлікту з оточенням</li><li><strong>Знецінення</strong> — руйнація попередніх авторитетів</li><li><strong>Деспотизм</strong> — прагнення змусити всіх робити по-своєму</li></ol><p><strong>Психологічний смисл кризи:</strong> відокремлення дитини від дорослого, становлення особистісного «Я». <em>«Я сам!»</em> — головний вираз кризи.</p>`,src:"Виготський Л.С. Криза трьох років // Зібрані твори Т.4 (1984)."},
+{cat:"Вікова психологія",q:"Загальна характеристика дошкільного віку",a:`<p>Дошкільний вік: <strong>3–7 років</strong>.</p><p><strong>Провідна діяльність</strong> — сюжетно-рольова гра (Ельконін): дитина відтворює соціальні ролі дорослих, засвоює норми і відносини.</p><p><strong>Нові психологічні утворення:</strong></p><ul><li>Початок формування довільної поведінки</li><li>Виникнення моральних уявлень і норм</li><li>Розвиток образного мислення і уяви</li><li>Формування «внутрішнього плану дій»</li><li>Початок особистісного самосвідомості («хто я?»)</li></ul><p><strong>Когнітивний розвиток (Піаже)</strong>: доопераційна стадія — егоцентризм, анімізм, відсутність збереження.</p><p><strong>Криза 7 років</strong> — втрата дитячої безпосередності, поява «рефлексії переживань».</p>`,src:"Ельконін Д.Б. Психологія гри (1978); Піаже Ж. Мова і мислення дитини (1923)."},
+{cat:"Вікова психологія",q:"Загальна характеристика юнацького віку",a:`<p>Юнацький вік: <strong>17–25 років</strong> (рання юність 15–18, пізня 18–25).</p><p><strong>Центральне завдання</strong> — остаточне формування <strong>особистісної і професійної ідентичності</strong> (Еріксон, стадія 5).</p><p><strong>Психологічні особливості:</strong></p><ul><li>Завершення формування мислення, розвиток критичного і системного аналізу</li><li>Самовизначення: «Хто я? Куди йду?»</li><li>Вибір вищої освіти, спеціальності, партнера</li><li>Формування стійкої системи цінностей і світогляду</li><li>Сексуальна і романтична ідентичність</li><li>Провідна діяльність — навчально-професійна</li></ul><p><strong>Новоутворення:</strong> відчуття дорослості, відповідальність, самостійність у прийнятті рішень.</p>`,src:"Кон І.С. Психологія юнацтва (1989); Еріксон Е. Ідентичність: юність і криза (1968)."},
+{cat:"Вікова психологія",q:"Класифікація віку дорослої людини. Кризи дорослості",a:`<p><strong>Класифікація дорослості:</strong></p><ul><li><strong>Рання дорослість</strong>: 20–40 р. — становлення кар'єри, сім'ї, дружби; криза близькості (Еріксон)</li><li><strong>Середня дорослість</strong>: 40–60 р. — «акме», переосмислення; криза генеративності; криза «середини життя»</li><li><strong>Пізня дорослість</strong>: 60+ р. — мудрість або відчай (Еріксон); адаптація до виходу на пенсію</li></ul><p><strong>Кризи дорослості:</strong></p><ul><li><strong>Криза 30 р.</strong> — переоцінка виборів молодості: сім'я, кар'єра, смисл</li><li><strong>Криза «середини життя» (40–45 р.)</strong> — усвідомлення смертності, переоцінка досягнень (Шихи, Левінсон)</li><li><strong>Криза виходу на пенсію</strong> — втрата соціальної ролі, ідентичності через роботу</li></ul>`,src:"Levinson D. The Seasons of a Man's Life (1978); Erickson E. Childhood and Society (1950); Шихи Г. Вікові кризи."},
+
+// ===== ІСТОРІЯ ПСИХОЛОГІЇ =====
+{cat:"Історія психології",q:"Психологічні теорії античності класичного періоду (Сократ, Платон, Аристотель)",a:`<p><strong>Сократ (469–399 до н.е.)</strong>: душа — джерело розуму і моральності; самопізнання («пізнай себе самого»); метод маєвтики — пологи думки через запитання.</p><p><strong>Платон (427–347 до н.е.)</strong>: ідеалізм; душа безсмертна, передіснує до тіла; три частини душі: розумна (голова), мужня (груди), пожадлива (черево); пізнання — спогад про ідеї; тіло — темниця душі.</p><p><strong>Аристотель (384–322 до н.е.)</strong>: трактат «Про душу» (De Anima) — перше систематичне дослідження психічних явищ; душа — форма тіла (є там, де є тіло); три роди душі: рослинна (живлення), чуттєва (відчуття, рух), розумна (людина); розробив вчення про пам'ять, уяву, мислення, емоції.</p>`,src:"Аристотель. Про душу / Пер. П.Попов. — М., 1937; Yaroshevsky M. History of Psychology (1985)."},
+{cat:"Історія психології",q:"Загальна характеристика біхевіоризму",a:`<p><strong>Біхевіоризм</strong> виник на початку XX ст. у США (Дж. Вотсон, 1913 — «маніфест біхевіоризму»).</p><p><strong>Основні положення:</strong></p><ul><li>Предмет психології — поведінка, а не свідомість (свідомість не піддається об'єктивному спостереженню)</li><li>Схема: <strong>S → R</strong> (стимул → реакція)</li><li>Поведінка формується через навчання — класичне (Павлов, Вотсон) і оперантне (Скіннер) обумовлення</li><li>«Дайте мені 12 здорових немовлят...» — середовище визначає все</li></ul><p><strong>Необіхевіоризм (Халл, Толмен, Скіннер)</strong>: введено поняття «проміжних змінних»; Толмен — когнітивні карти.</p><p><strong>Критика:</strong> ігнорує свідомість, мову, внутрішні стани; механістична концепція людини.</p>`,src:"Watson J.B. Psychology as the behaviorist views it (1913); Skinner B.F. Behavior of Organisms (1938)."},
+{cat:"Історія психології",q:"Функціоналізм (Ф. Брентано, К. Штумпф; В. Джемс, Р. Вудвордс)",a:`<p><strong>Функціоналізм</strong> — напрям, що вивчає психічні функції і процеси, а не елементи свідомості.</p><p><strong>Ф. Брентано (1838–1917)</strong>: «Психологія з емпіричної точки зору» (1874); психологія вивчає акти (дії) свідомості, а не зміст; <em>інтенціональність</em> — кожен психічний акт спрямований на об'єкт.</p><p><strong>К. Штумпф (1848–1936)</strong>: психологія явищ vs психологія функцій; фундатор берлінської школи, вчитель гештальтпсихологів.</p><p><strong>В. Джемс (1842–1910)</strong>: «Потік свідомості» — свідомість не мозаїка елементів, а безперервний потік; практичність (прагматизм); теорія емоцій Джемса–Ланге; вчення про звичку і Я.</p><p><strong>Р. Вудвортс (1869–1962)</strong>: динамічна психологія; S → O → R, де O — організм із його станами.</p>`,src:"James W. Principles of Psychology (1890); Brentano F. Psychology from an Empirical Standpoint (1874)."},
+{cat:"Історія психології",q:"Структуралізм в психології (Е. Тітченер)",a:`<p>Е.Б. <strong>Тітченер (1867–1927)</strong> — учень Вундта, засновник американського структуралізму.</p><p><strong>Основні положення:</strong></p><ul><li>Предмет психології — структура свідомості, її «атоми»: відчуття, образи, афективні стани</li><li>Метод — систематична <strong>інтроспекція</strong> (навченого спостерігача)</li><li>Завдання психології: <em>що?</em> (елементи свідомості), <em>як?</em> (поєднання) і <em>чому?</em> (фізіологічні кореляти)</li><li>Розрізняв якість, інтенсивність, тривалість, чіткість відчуттів</li></ul><p><strong>Критика і занепад:</strong> метод інтроспекції ненадійний; Вюрцбурзька школа і гештальтпсихологи показали обмеженість елементаризму.</p>`,src:"Titchener E.B. Outlines of Psychology (1896); Schultz D. A History of Modern Psychology."},
+{cat:"Історія психології",q:"Описова психологія (В. Дільтей, Е. Шпрангер)",a:`<p><strong>В. Дільтей (1833–1911)</strong>: запропонував розмежування «наук про природу» (пояснення) і «наук про дух» (розуміння). Психологія мала бути <em>описовою і розуміючою</em>, а не пояснювальною — вивчати цілісний зв'язок душевного життя, а не зводити його до елементів.</p><p><strong>Е. Шпрангер (1882–1963)</strong>: типологія особистості за основними формами духовного буття — <em>6 типів ціннісних орієнтацій:</em></p><ul><li>Теоретичний (пізнання)</li><li>Економічний (корисність)</li><li>Естетичний (краса)</li><li>Соціальний (любов до людей)</li><li>Політичний (влада)</li><li>Релігійний (пошук смислу)</li></ul><p>Метод Шпрангера — герменевтичне розуміння індивідуальності; вплив на типологічний підхід в психодіагностиці (тест Олпорта–Вернона–Ліндзі).</p>`,src:"Dilthey W. Ideas for a Descriptive and Analytical Psychology (1894); Spranger E. Types of Men (1914)."},
+{cat:"Історія психології",q:"Вюрцбурзька школа (О. Кюльпе, К. Бюлер)",a:`<p>Вюрцбурзька школа (кінець XIX — поч. XX ст.) — Оскар Кюльпе та учні (Н. Ах, К. Бюлер, К. Марбе).</p><p><strong>Ключові відкриття:</strong></p><ul><li><strong>Безобразне мислення</strong> — думки існують без чуттєвого образу (спростовує структуралізм Вундта–Тітченера)</li><li><strong>Детермінуюча тенденція</strong> (Н. Ах) — несвідомо-направляючий вплив завдання на хід думки</li><li><strong>Усвідомленість</strong> — особлива форма психічного; «знання без образу»</li></ul><p><strong>К. Бюлер (1879–1963)</strong>: три ступені розвитку мислення — інстинкт → навчання → інтелект; внесок у психологію мови і дитячого розвитку.</p><p><strong>Значення:</strong> поклали початок психології мислення як самостійній галузі.</p>`,src:"Boring E.G. A History of Experimental Psychology (1950); Зінченко В.П., Моргунов Є.Б. Людина, що розвивається."},
+{cat:"Історія психології",q:"Французька психологічна школа (Т. Рібо, П. Жане, Е. Дюркгейм)",a:`<p><strong>Т. Рібо (1839–1916)</strong>: засновник французької наукової психології; метод «природного експерименту» — вивчення патологій як засіб пізнання норми; «Хвороби особистості», «Хвороби волі», «Хвороби пам'яті». Регрес — зворотний шлях розвитку (<em>закон регресії Рібо</em>).</p><p><strong>П. Жане (1859–1947)</strong>: учень Шарко; психічні автоматизми і «психологічний напруга»; поняття <em>підсвідомого</em> (до Фрейда); вивчав дисоціацію, істерію; вплинув на Жана Піаже і Виготського.</p><p><strong>Е. Дюркгейм (1858–1917)</strong>: соціолог; концепція «колективних уявлень» — суспільство є понадіндивідуальною реальністю, що формує психіку. Вплинув на соціальну психологію і культурно-історичну теорію.</p>`,src:"Ribot T. Diseases of Memory (1881); Janet P. L'automatisme psychologique (1889); Durkheim E. The Rules of Sociological Method (1895)."},
+{cat:"Історія психології",q:"Загальна характеристика глибинної психології",a:`<p><strong>Глибинна психологія</strong> — напрям, що досліджує несвідомі шари психіки. Виникла на межі XIX–XX ст.</p><p><strong>Основні школи:</strong></p><ul><li><strong>Класичний психоаналіз</strong> (Фрейд) — лібідо, сексуальні потяги, Ід–Его–Супер-Его</li><li><strong>Аналітична психологія</strong> (Юнг) — колективне несвідоме, архетипи, процес індивідуалізації</li><li><strong>Індивідуальна психологія</strong> (Адлер) — комплекс неповноцінності, прагнення до переваги, стиль життя</li><li><strong>Неофрейдизм</strong> (Хорні, Фромм, Саллівен) — соціальні і культурні детермінанти, переосмислення ролі сексуальності</li><li><strong>Его-психологія</strong> (Анна Фрейд, Гартманн) — автономні функції Его</li></ul><p>Об'єднує всі ці школи визнання <strong>несвідомого</strong> як основного детермінанта поведінки.</p>`,src:"Фрейд З. Вступ до психоаналізу (1917); Юнг К.Г. Психологічні типи (1921); Адлер А. Практика і теорія індивідуальної психології (1920)."},
+];
+
+// Quiz data — create MC questions from QA
+function makeQuizQuestion(item, allItems) {
+  const correctA = item.a.replace(/<[^>]+>/g,'').substring(0,200);
+  // pick 3 wrong answers
+  const wrong = allItems.filter(x=>x!==item).sort(()=>Math.random()-0.5).slice(0,3);
+  const options = [
+    {text: shortAnswer(item.a), correct: true},
+    ...wrong.map(w=>({text: shortAnswer(w.a), correct: false}))
+  ].sort(()=>Math.random()-0.5);
+  return { q: item.q, options };
+}
+
+function shortAnswer(html) {
+  const t = html.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  // first sentence
+  const s = t.split(/[.!?]/)[0];
+  return s.length > 20 ? s.substring(0,120)+'...' : t.substring(0,120)+'...';
+}
+
+// State
+let currentCards = [...QA];
+let cardIndex = 0;
+let learned = new Set();
+let quizItems = [];
+let quizIndex = 0;
+let quizScore = 0;
+let currentCat = 'all';
+let searchTerm = '';
+
+// INIT
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('totalQ').textContent = QA.length;
+  buildCatFilter();
+  renderList();
+  renderCard();
+});
+
+function buildCatFilter() {
+  const wrap = document.getElementById('catFilter');
+  const cats = ['all', ...Object.keys(CATEGORIES)];
+  wrap.innerHTML = cats.map(c => `
+    <button class="cat-btn ${c==='all'?'active':''}" 
+      onclick="setCat('${c}')" data-cat="${c}">
+      ${c==='all'?'Всі':c}
+    </button>`).join('');
+}
+
+function setCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat===cat));
+  renderList();
+}
+
+function filterQuestions() {
+  searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  renderList();
+}
+
+function getFiltered() {
+  return QA.filter(item => {
+    const catOk = currentCat === 'all' || item.cat === currentCat;
+    const searchOk = !searchTerm || item.q.toLowerCase().includes(searchTerm) || item.a.toLowerCase().includes(searchTerm);
+    return catOk && searchOk;
+  });
+}
+
+function renderList() {
+  const filtered = getFiltered();
+  document.getElementById('resultsCount').textContent = `Знайдено: ${filtered.length} питань`;
+  
+  // group by cat
+  const byCat = {};
+  filtered.forEach(item => {
+    if (!byCat[item.cat]) byCat[item.cat] = [];
+    byCat[item.cat].push(item);
+  });
+
+  let html = '';
+  let globalIdx = 0;
+  Object.entries(byCat).forEach(([cat, items]) => {
+    html += `<div class="section-heading">${cat}</div>`;
+    items.forEach(item => {
+      globalIdx++;
+      const origIdx = QA.indexOf(item);
+      const isOpen = false;
+      html += `
+        <div class="q-item" id="qi${origIdx}">
+          <div class="q-header" onclick="toggleQ(${origIdx})">
+            <span class="q-num">${globalIdx}.</span>
+            <span class="q-title">${item.q}</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            ${item.a}
+            <div class="source-tag">📖 Джерело: ${item.src}</div>
+          </div>
+        </div>`;
+    });
+  });
+  
+  if (!filtered.length) html = '<div class="no-results">Нічого не знайдено. Спробуйте змінити запит.</div>';
+  document.getElementById('questionList').innerHTML = html;
+}
+
+function toggleQ(idx) {
+  const el = document.getElementById('qi'+idx);
+  el.classList.toggle('open');
+}
+
+// CARDS
+function renderCard() {
+  if (!currentCards.length) return;
+  const item = currentCards[cardIndex % currentCards.length];
+  const card = document.getElementById('theCard');
+  card.classList.remove('flipped');
+  document.getElementById('cardQ').textContent = item.q;
+  document.getElementById('cardA').innerHTML = item.a + `<div class="source-tag" style="margin-top:.8rem">📖 ${item.src}</div>`;
+  const pct = Math.round((cardIndex / currentCards.length) * 100);
+  document.getElementById('cardProgress').style.width = pct + '%';
+  document.getElementById('cardCounter').textContent = `${cardIndex + 1} / ${currentCards.length}`;
+  const btn = document.getElementById('learnBtn');
+  btn.textContent = learned.has(item.q) ? '✓ Знаю' : '✓ Знаю';
+  btn.style.opacity = learned.has(item.q) ? '0.5' : '1';
+}
+
+function flipCard() {
+  document.getElementById('theCard').classList.toggle('flipped');
+}
+
+function nextCard() {
+  document.getElementById('theCard').classList.remove('flipped');
+  cardIndex = (cardIndex + 1) % currentCards.length;
+  setTimeout(renderCard, 50);
+}
+
+function prevCard() {
+  document.getElementById('theCard').classList.remove('flipped');
+  cardIndex = (cardIndex - 1 + currentCards.length) % currentCards.length;
+  setTimeout(renderCard, 50);
+}
+
+function shuffleCards() {
+  currentCards = [...QA].sort(() => Math.random() - 0.5);
+  cardIndex = 0;
+  document.getElementById('theCard').classList.remove('flipped');
+  renderCard();
+}
+
+function resetCards() {
+  currentCards = [...QA];
+  cardIndex = 0;
+  document.getElementById('theCard').classList.remove('flipped');
+  renderCard();
+}
+
+function markLearned() {
+  const item = currentCards[cardIndex];
+  learned.add(item.q);
+  document.getElementById('learnedCount').textContent = learned.size;
+  nextCard();
+}
+
+// QUIZ
+function startQuiz() {
+  document.getElementById('quizScore').classList.remove('show');
+  // pick 10 random
+  quizItems = [...QA].sort(() => Math.random() - 0.5).slice(0, 10).map(item => makeQuizQuestion(item, QA));
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  if (quizIndex >= quizItems.length) {
+    container.innerHTML = '';
+    const scoreEl = document.getElementById('quizScore');
+    scoreEl.classList.add('show');
+    document.getElementById('scoreBig').textContent = `${quizScore}/${quizItems.length}`;
+    const pct = Math.round(quizScore/quizItems.length*100);
+    let label = pct >= 80 ? '🏆 Чудово! Ви відмінно підготовлені!' : pct >= 60 ? '👍 Непогано! Повторіть слабкі місця.' : '📚 Потрібно більше повторення.';
+    document.getElementById('scoreLabel').textContent = label;
+    return;
+  }
+  const q = quizItems[quizIndex];
+  let optHtml = q.options.map((opt, i) => `
+    <button class="quiz-opt" onclick="answerQuiz(this, ${opt.correct})" data-correct="${opt.correct}">
+      ${String.fromCharCode(65+i)}. ${opt.text}
+    </button>`).join('');
+  container.innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-q-num">Питання ${quizIndex+1} / ${quizItems.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">${optHtml}</div>
+      <div class="quiz-feedback" id="qFeedback"></div>
+    </div>`;
+}
+
+function answerQuiz(btn, isCorrect) {
+  const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  opts.forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === 'true') o.classList.add('correct');
+  });
+  const feedback = document.getElementById('qFeedback');
+  if (isCorrect) {
+    btn.classList.add('correct');
+    quizScore++;
+    feedback.textContent = '✓ Правильно!';
+    feedback.className = 'quiz-feedback show ok';
+  } else {
+    btn.classList.add('wrong');
+    feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+    feedback.className = 'quiz-feedback show err';
+  }
+  setTimeout(() => { quizIndex++; renderQuiz(); }, 1800);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['list','cards','quiz'][i] === tab);
+  });
+  document.getElementById('view-list').style.display = tab==='list' ? '' : 'none';
+  document.getElementById('view-cards').style.display = tab==='cards' ? '' : 'none';
+  document.getElementById('view-quiz').style.display = tab==='quiz' ? '' : 'none';
+  if (tab==='cards') renderCard();
+  if (tab==='quiz') { document.getElementById('quizContainer').innerHTML=''; document.getElementById('quizScore').classList.remove('show'); }
+}
+</script>
+</body>
+</html>
